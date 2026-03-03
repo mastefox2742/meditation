@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parole Vivante - Prédications Catholiques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '✝';
+            position: absolute;
+            font-size: 15rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .verse-banner {
+            background: rgba(255,255,255,0.2);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .verse-banner p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .verse-ref {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .predication-card {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 5px solid #667eea;
+        }
+
+        .predication-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .predication-title {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .predication-title::before {
+            content: '✝';
+            font-size: 2.5rem;
+            opacity: 0.6;
+        }
+
+        .section-title {
+            color: #764ba2;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .section-content {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #e17055;
+        }
+
+        .highlight strong {
+            color: #d63031;
+        }
+
+        .bible-reference {
+            background: #e8f4f8;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-style: italic;
+            border-left: 4px solid #3498db;
+        }
+
+        .prayer-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .prayer-box h3 {
+            color: #764ba2;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .prayer-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .meditation {
+            background: #fff5f5;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border: 2px dashed #e17055;
+        }
+
+        .meditation h4 {
+            color: #d63031;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            margin: 3rem 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .predication-card {
+                padding: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .scroll-top:hover {
+            background: #764ba2;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✨ Parole Vivante ✨</h1>
+        <p class="subtitle">Méditations et Prédications Catholiques</p>
+        <div class="verse-banner">
+            <p>"Je suis le chemin, la vérité et la vie. Nul ne vient au Père que par moi."</p>
+            <p class="verse-ref">— Jean 14:6</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#relations">Relations Constructives</a></li>
+            <li><a href="#exil">De l'Exil à la Rencontre</a></li>
+            <li><a href="#temoignage">Témoignage Personnel</a></li>
+            <li><a href="#priere">Espace Prière</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Première Prédication -->
+        <div id="relations" class="predication-card">
+            <h2 class="predication-title">Les Relations Constructives et la Valeur du Sacré</h2>
+            
+            <h3 class="section-title">I. Le Fondement de l'Identité : Nos Relations</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Que celui qui veut venir après moi renonce à lui-même, qu'il se charge de sa croix, et qu'il me suive." — Marc 8:34
+                </div>
+                
+                <p>Les relations forment les bases de l'identité de l'être humain. Dieu nous a créés pour vivre en communion : d'abord avec Lui, puis avec nos frères et sœurs. Ces relations peuvent être celles que nous entretenons avec nos proches (famille, amis, communauté), mais <strong>le plus important reste la relation que nous avons avec le Christ Jésus</strong>.</p>
+                
+                <p>La Sainte Écriture nous enseigne : <em>"Honore ton père et ta mère, afin que tes jours se prolongent dans le pays que l'Éternel, ton Dieu, te donne"</em> (Exode 20:12). La famille est le premier lieu où Dieu nous forme. Nous recevons de nos parents un héritage naturel et spirituel qui façonne notre manière d'aimer, de communiquer et de vivre notre foi.</p>
+                
+                <p>Saint Paul nous rappelle : <em>"Vous êtes le corps du Christ, et vous êtes ses membres, chacun pour sa part"</em> (1 Corinthiens 12:27). Notre identité se construit donc dans cette double dimension : verticale (notre relation avec Dieu) et horizontale (nos relations avec les autres).</p>
+                
+                <div class="highlight">
+                    <strong>Conseil spirituel :</strong> Avant de pouvoir nouer de bonnes relations extérieures, nous devons d'abord cultiver notre relation intime avec Dieu et guérir nos blessures familiales. C'est dans la sécurité de l'amour du Père que nous trouvons la force de nous ouvrir aux autres. Comme l'écrit saint Jean : <em>"Nous, nous aimons, parce que lui nous a aimés le premier"</em> (1 Jean 4:19).
+                </div>
+            </div>
+
+            <h3 class="section-title">II. Le Danger de la Fatigue et de l'Immédiateté</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Jacob donna à Ésaü du pain et du potage de lentilles. Il mangea et but, puis se leva et s'en alla. C'est ainsi qu'Ésaü méprisa le droit d'aînesse." — Genèse 25:34
+                </div>
+                
+                <p>L'histoire d'Ésaü nous enseigne une leçon cruciale sur le discernement spirituel. Rentrant affamé des champs, Ésaü aperçoit son frère Jacob préparant un potage. Dans sa fatigue et sa faim pressante, il dit : <em>"Laisse-moi, je te prie, manger de ce roux, car je suis fatigué"</em> (Genèse 25:30).</p>
+                
+                <p>Ce moment de <strong>vulnérabilité physique et émotionnelle</strong> devient un piège spirituel. Ésaü échange son droit d'aînesse — qui incluait la bénédiction spirituelle, le rôle de prêtre de la famille et une double portion d'héritage — contre un simple repas qui satisfait un besoin immédiat.</p>
+                
+                <div class="highlight">
+                    <strong>L'appel à la vigilance :</strong> Ne laissons pas nos besoins immédiats (faim, fatigue, stress, émotions) dicter nos décisions au point de nous faire oublier notre vision à long terme. Satan exploite souvent nos moments de faiblesse. Souvenons-nous de Jésus au désert : <em>"L'homme ne vivra pas de pain seulement, mais de toute parole qui sort de la bouche de Dieu"</em> (Matthieu 4:4).
+                </div>
+                
+                <p><strong>L'auteur de l'épître aux Hébreux nous met en garde :</strong> <em>"Qu'il n'y ait ni débauché, ni profane comme Ésaü, qui pour un mets vendit son droit d'aînesse"</em> (Hébreux 12:16). Cette décision prise à la légère a eu des conséquences éternelles.</p>
+                
+                <p>Donnons de la valeur à ce que nous possédons : notre baptême, notre vocation, notre foi, notre famille spirituelle. Ces dons de Dieu sont infiniment plus précieux que les satisfactions temporaires du monde. Comme l'enseigne Jésus : <em>"Que servira-t-il à un homme de gagner le monde entier, s'il perd son âme?"</em> (Marc 8:36).</p>
+            </div>
+
+            <h3 class="section-title">III. Ne pas Mépriser le Sacré</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Ne vous y trompez pas : on ne se moque pas de Dieu. Ce qu'un homme aura semé, il le moissonnera aussi." — Galates 6:7
+                </div>
+                
+                <p>Le Seigneur nous confie à chacun des dons sacrés : notre âme créée à Son image, notre vocation personnelle, les sacrements, notre mission dans l'Église. <strong>Mépriser le sacré, c'est traiter avec légèreté ce que Dieu a sanctifié</strong>.</p>
+                
+                <p>Dans le cas d'Ésaü, son droit d'aînesse représentait bien plus qu'un privilège social. Il portait en lui la promesse faite à Abraham : <em>"En toi seront bénies toutes les familles de la terre"</em> (Genèse 12:3). En le vendant, Ésaü a méprisé son rôle dans le plan de salut de Dieu.</p>
+                
+                <p>L'Écriture nous met en garde contre ce mépris : <em>"C'est ainsi qu'Ésaü méprisa le droit d'aînesse"</em> (Genèse 25:34). Le verbe hébreu utilisé ici signifie "traiter comme sans valeur" ou "tenir pour rien".</p>
+                
+                <div class="meditation">
+                    <h4>Réflexion spirituelle</h4>
+                    <p>Demandons-nous : Qu'est-ce que je risque de mépriser dans ma vie spirituelle ?</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>La messe dominicale pour quelques heures de sommeil supplémentaires ?</li>
+                        <li>Ma vocation au mariage ou à la vie consacrée pour des plaisirs éphémères ?</li>
+                        <li>La présence réelle du Christ dans l'Eucharistie par routine ou distraction ?</li>
+                        <li>Les commandements de Dieu au profit des modes du monde ?</li>
+                    </ul>
+                </div>
+                
+                <div class="highlight">
+                    <strong>L'appel à la gratitude :</strong> Saint Paul nous exhorte : <em>"Rendez continuellement grâces pour toutes choses à Dieu le Père, au nom de notre Seigneur Jésus-Christ"</em> (Éphésiens 5:20). Reconnaissons la valeur inestimable de ce que Dieu nous donne. Comme le dit le Psalmiste : <em>"Qu'as-tu que tu n'aies reçu ?"</em> (1 Corinthiens 4:7). Tout est grâce !
+                </div>
+            </div>
+
+            <h3 class="section-title">IV. Les Conséquences de nos Choix</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Isaac trembla d'une grande frayeur, et dit : Qui est donc celui qui a chassé du gibier, et me l'a apporté ? J'ai mangé de tout avant que tu vinsses, et je l'ai béni. Aussi sera-t-il béni." — Genèse 27:33
+                </div>
+                
+                <p>Le chapitre 27 de la Genèse nous révèle le moment dramatique où les conséquences du mépris d'Ésaü se manifestent pleinement. Isaac, vieilli et aveugle, veut bénir Ésaü avant de mourir. Mais Rebecca, guidée par la révélation divine reçue avant la naissance des jumeaux (<em>"L'aîné sera assujetti au plus jeune"</em> - Genèse 25:23), aide Jacob à recevoir la bénédiction.</p>
+                
+                <p><strong>Quand Ésaü revient et découvre ce qui s'est passé, il pousse un grand cri amer :</strong> <em>"Bénis-moi aussi, mon père !"</em> (Genèse 27:34). Mais Isaac répond : <em>"Ton frère est venu avec ruse, et il a pris ta bénédiction"</em> (Genèse 27:35).</p>
+                
+                <p>Cette scène illustre une vérité spirituelle profonde : <strong>certaines décisions ont des conséquences irréversibles</strong>. L'auteur de l'épître aux Hébreux nous avertit : <em>"Vous savez que, plus tard, voulant obtenir la bénédiction, il fut rejeté, quoiqu'il la sollicitât avec larmes ; car son repentir ne put avoir aucun effet"</em> (Hébreux 12:17).</p>
+                
+                <div class="highlight">
+                    <strong>Attention, frères et sœurs !</strong> Il arrive un moment où il est trop tard. Jésus nous avertit dans la parabole des vierges sages et folles : <em>"En vérité, je vous le dis, je ne vous connais pas"</em> (Matthieu 25:12). Le temps de la miséricorde ne dure pas éternellement.
+                </div>
+                
+                <p>Face à cette perte, Ésaü réagit par la haine : <em>"Les jours du deuil de mon père vont approcher, et je tuerai Jacob, mon frère"</em> (Genèse 27:41). Cette réaction révèle un piège spirituel commun : au lieu de nous repentir sincèrement de nos mauvais choix, nous blâmons les autres et nous nous enfermons dans l'amertume.</p>
+                
+                <div class="meditation">
+                    <h4>Examen de conscience</h4>
+                    <p>Saint Jacques nous exhorte : <em>"Confessez donc vos péchés les uns aux autres, et priez les uns pour les autres, afin que vous soyez guéris"</em> (Jacques 5:16). Ne laissons pas l'orgueil ou la colère nous empêcher de reconnaître nos erreurs et de revenir humblement au Seigneur. Comme le dit le Psaume 32:5 : <em>"Je t'ai fait connaître mon péché, je n'ai pas caché mon iniquité [...] et tu as effacé la peine de mon péché."</em></p>
+                </div>
+            </div>
+
+            <h3 class="section-title">Conclusion : L'Exil et l'École de la Vie</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Jacob partit de Beer-Schéba, et s'en alla à Charan. [...] Il eut un songe. Et voici, une échelle était appuyée sur la terre, et son sommet touchait au ciel. Et voici, les anges de Dieu montaient et descendaient par cette échelle." — Genèse 28:10-12
+                </div>
+                
+                <p>L'exil de Jacob devient une école de transformation spirituelle. Fuyant la colère de son frère, seul dans le désert, Jacob fait une expérience qui changera sa vie : le songe de Béthel. Dans ce lieu, Dieu se révèle à lui et renouvelle la promesse faite à Abraham.</p>
+                
+                <p><strong>Au réveil, Jacob s'exclame :</strong> <em>"Certainement, l'Éternel est en ce lieu, et moi, je ne le savais pas ! [...] C'est ici la maison de Dieu, c'est ici la porte des cieux !"</em> (Genèse 28:16-17). L'exil lui a ouvert les yeux spirituels.</p>
+                
+                <p>Pendant vingt ans chez Laban (Genèse 29-31), Jacob va expérimenter la discipline divine. Il sera lui-même trompé, exploité, éprouvé. Le trompeur sera trompé ! Mais à travers ces épreuves, Dieu façonne son caractère. Comme le dit le Psaume 119:71 : <em>"Il m'est bon d'avoir été humilié, afin que j'apprenne tes statuts."</em></p>
+                
+                <div class="highlight">
+                    <strong>Leçon pour nous :</strong> Nos déserts et nos exils ne sont jamais des accidents. Dieu permet ces temps de solitude et d'épreuve pour nous purifier, nous enseigner la dépendance et briser notre orgueil. Comme l'enseigne saint Paul : <em>"Nous nous glorifions même des afflictions, sachant que l'affliction produit la persévérance, la persévérance la victoire dans l'épreuve, et cette victoire l'espérance"</em> (Romains 5:3-4).
+                </div>
+                
+                <p>L'histoire ne s'arrête pas là. Jacob reviendra transformé, prêt à se réconcilier avec Ésaü (Genèse 33). Après avoir lutté avec l'Ange et reçu le nom d'Israël (Genèse 32:28), il est devenu un homme nouveau.</p>
+                
+                <div class="meditation">
+                    <h4>Application personnelle</h4>
+                    <p><strong>Prenons conscience de la valeur de notre héritage spirituel.</strong> Veillons sur nos relations et nos cœurs. Ne sacrifions pas l'éternel sur l'autel de l'éphémère. Comme Jésus nous enseigne : <em>"Amassez-vous des trésors dans le ciel, où la teigne et la rouille ne détruisent point, et où les voleurs ne percent ni ne dérobent. Car là où est ton trésor, là aussi sera ton cœur"</em> (Matthieu 6:20-21).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Deuxième Prédication -->
+        <div id="exil" class="predication-card">
+            <h2 class="predication-title">Se Rendre à l'Amour : De l'Exil à la Rencontre</h2>
+            
+            <h3 class="section-title">1. La Nature de la Foi et la Protection de Rebecca</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Rebecca dit à Isaac : Je suis dégoûtée de la vie, à cause des filles de Heth. Si Jacob prend une femme [...] parmi les filles de Heth, à quoi me sert la vie ?" — Genèse 27:46
+                </div>
+                
+                <p>La foi authentique n'est pas une simple quête humaine, mais <strong>une relation vivante initiée par Dieu Lui-même</strong>. L'Écriture nous enseigne : <em>"Nul ne peut venir à moi, si le Père qui m'a envoyé ne l'attire"</em> (Jean 6:44). Dieu fait toujours le premier pas.</p>
+                
+                <p>Rebecca illustre magnifiquement cet amour de Dieu qui protège et guide. Voyant la menace de mort qui pèse sur Jacob à cause de la haine d'Ésaü, elle prend une décision difficile mais sage : envoyer son fils bien-aimé en exil chez son frère Laban à Charan.</p>
+                
+                <p><strong>Son attitude reflète trois dimensions de l'amour divin :</strong></p>
+                
+                <ul>
+                    <li><strong>Un Amour qui ramène :</strong> Rebecca dit à Jacob : <em>"Reste chez lui quelque temps, jusqu'à ce que la fureur de ton frère s'apaise [...] Pourquoi serais-je privée de vous deux le même jour ?"</em> (Genèse 27:44-45). Dieu nous cherche sans cesse pour nous ramener à Lui. Comme le bon berger de Luc 15:4 : <em>"Quel homme d'entre vous, s'il a cent brebis, et qu'il en perde une, ne laisse les quatre-vingt-dix-neuf autres dans le désert pour aller après celle qui est perdue, jusqu'à ce qu'il la retrouve ?"</em></li>
+                    
+                    <li><strong>Un Amour qui protège :</strong> Rebecca préserve ses fils d'un fratricide qui aurait détruit les deux. De même, Dieu nous protège du tentateur. Jésus prie pour Pierre : <em>"Simon, Simon, Satan vous a réclamés, pour vous cribler comme le froment. Mais j'ai prié pour toi, afin que ta foi ne défaille point"</em> (Luc 22:31-32). Même quand nous avons l'impression que le monde entier est contre nous, notre Père céleste veille.</li>
+                    
+                    <li><strong>Un Désert formateur :</strong> L'exil de Jacob n'est pas une punition, mais une préparation. Deutéronome 8:2-3 explique le sens du désert : <em>"Souviens-toi de tout le chemin que l'Éternel, ton Dieu, t'a fait faire pendant ces quarante années dans le désert, afin de t'humilier et de t'éprouver [...] Il t'a humilié, il t'a fait souffrir de la faim [...] afin de t'apprendre que l'homme ne vit pas de pain seulement."</em></li>
+                </ul>
+                
+                <div class="highlight">
+                    <strong>Enseignement spirituel :</strong> Nos épreuves et nos "exils" sont des bénédictions déguisées. Dieu utilise ces moments pour briser notre orgueil et nous enseigner la dépendance totale envers Lui. Comme le proclame Jérémie 29:11 : <em>"Car je connais les projets que j'ai formés sur vous, dit l'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l'espérance."</em>
+                </div>
+            </div>
+
+            <h3 class="section-title">2. La Prière : L'Échelle entre Ciel et Terre</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "En vérité, en vérité, je vous le dis, vous verrez désormais le ciel ouvert et les anges de Dieu monter et descendre sur le Fils de l'homme." — Jean 1:51
+                </div>
+                
+                <p>Dans son songe à Béthel, Jacob voit <em>"une échelle appuyée sur la terre, et son sommet touchait au ciel. Et voici, les anges de Dieu montaient et descendaient par cette échelle"</em> (Genèse 28:12). Cette vision prophétique trouve son accomplissement parfait en Jésus-Christ.</p>
+                
+                <p><strong>La prière est cette dimension sacrée où nous trouvons la paix</strong>, car elle nous relie à Dieu. Elle peut être définie comme <em>l'échelle mystique</em> reliant les cieux et la terre, le pont entre notre humanité blessée et la sainteté divine.</p>
+                
+                <div class="highlight">
+                    <strong>Jésus, l'Échelle véritable :</strong> Le Christ est le médiateur unique entre Dieu et les hommes. Saint Paul l'affirme : <em>"Car il y a un seul Dieu, et aussi un seul médiateur entre Dieu et les hommes, Jésus-Christ homme"</em> (1 Timothée 2:5). C'est Lui qui ouvre le chemin vers le Père. Comme Il le dit Lui-même : <em>"Je suis le chemin, la vérité, et la vie. Nul ne vient au Père que par moi"</em> (Jean 14:6).
+                </div>
+                
+                <p><strong>L'Agneau de Dieu :</strong> Lorsque Jean-Baptiste voit Jésus venir vers lui, il proclame : <em>"Voici l'Agneau de Dieu, qui ôte le péché du monde"</em> (Jean 1:29). Le terme latin <em>Agnus Dei</em> nous rappelle que Jésus est l'Agneau pascal parfait, celui dont le sang nous sauve et nous donne accès au sanctuaire céleste. L'épître aux Hébreux nous enseigne : <em>"Ayant donc, frères, au moyen du sang de Jésus, une libre entrée dans le sanctuaire [...] approchons-nous avec un cœur sincère, dans la plénitude de la foi"</em> (Hébreux 10:19-22).</p>
+                
+                <p><strong>L'Objectif de la Vocation :</strong> Toute vocation chrétienne a une seule finalité : l'union avec Dieu. Le Catéchisme de l'Église Catholique nous rappelle que <em>"Dieu nous a créés pour le connaître, l'aimer et le servir, et ainsi parvenir au Paradis"</em>. Jésus prie pour nous : <em>"Père, je veux que là où je suis ceux que tu m'as donnés soient aussi avec moi"</em> (Jean 17:24).</p>
+                
+                <div class="meditation">
+                    <h4>La prière, respiration de l'âme</h4>
+                    <p>Saint Paul nous exhorte : <em>"Priez sans cesse"</em> (1 Thessaloniciens 5:17). La prière n'est pas seulement un moment dans la journée, mais une attitude permanente de communion avec Dieu. Sainte Thérèse de Lisieux disait : <em>"Pour moi, la prière, c'est un élan du cœur, c'est un simple regard jeté vers le Ciel, c'est un cri de reconnaissance et d'amour au sein de l'épreuve comme au sein de la joie."</em></p>
+                </div>
+            </div>
+
+            <h3 class="section-title">3. Méditation : Apprivoiser la Nuit</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Il y eut un homme d'entre les pharisiens, nommé Nicodème, un chef des Juifs, qui vint, lui, auprès de Jésus, de nuit." — Jean 3:1-2
+                </div>
+                
+                <p>La rencontre entre Jésus et Nicodème se déroule <em>"de nuit"</em>. Ce détail n'est pas anodin dans l'Évangile de Jean. La nuit symbolise à la fois notre obscurité spirituelle et le lieu privilégié de la rencontre intime avec Dieu.</p>
+                
+                <p><strong>Nicodème vient de nuit</strong> peut-être par prudence (craignant ses pairs), mais aussi parce que son âme est dans la nuit, cherchant la lumière. Jésus lui révèle : <em>"Si un homme ne naît de nouveau, il ne peut voir le royaume de Dieu"</em> (Jean 3:3). Cette renaissance spirituelle passe souvent par une "nuit obscure" de purification.</p>
+                
+                <div class="meditation">
+                    <h4>Le Silence révélateur</h4>
+                    <p>Le prophète Élie n'a pas rencontré Dieu dans le vent violent, ni dans le tremblement de terre, ni dans le feu, mais dans <em>"un murmure doux et léger"</em> (1 Rois 19:12). C'est dans le silence de la nuit, loin du tumulte du monde, que le Christ se révèle à nous. Le Psaume 46:11 nous invite : <em>"Arrêtez, et sachez que je suis Dieu."</em></p>
+                </div>
+                
+                <p><strong>Saint Jean de la Croix et la nuit obscure :</strong> La tradition mystique catholique nous enseigne que Dieu purifie l'âme à travers des périodes de sécheresse spirituelle, appelées "nuits obscures". Ces moments où Dieu semble absent sont en réalité ceux où Il travaille le plus profondément en nous.</p>
+                
+                <div class="highlight">
+                    <strong>Lutter contre la désorientation :</strong> Ne fuyons pas nos "nuits spirituelles" ! Jésus Lui-même a prié durant la nuit (Luc 6:12) et a connu l'agonie nocturne à Gethsémani (Matthieu 26:36-46). Comme le dit le Psaume 42:9 : <em>"Le jour, l'Éternel m'accordait sa grâce ; La nuit, je chantais ses louanges."</em> C'est précisément dans ces moments d'obscurité que Dieu façonne notre cœur et fortifie notre foi.
+                </div>
+                
+                <p>Jésus dit à Nicodème : <em>"La lumière est venue dans le monde, et les hommes ont préféré les ténèbres à la lumière"</em> (Jean 3:19). Mais celui qui vient à la lumière, même à travers la nuit de ses doutes et de ses peurs, trouvera la vie éternelle : <em>"Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle"</em> (Jean 3:16).</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Témoignage Personnel -->
+        <div id="temoignage" class="predication-card">
+            <h2 class="predication-title">Ma Relation avec le Christ Jésus : Un Chemin de Maturation</h2>
+            
+            <h3 class="section-title">L'importance du lien personnel</h3>
+            <div class="section-content">
+                <p>Il est primordial de connaître quelle est notre relation avec l'enfant Jésus et à quel niveau je me situe avec lui. Ma vie en elle-même n'avait pas beaucoup de sens au départ. Cependant, <strong>depuis que j'ai décidé de marcher avec le Seigneur, elle est devenue beaucoup plus mouvementée</strong>, parsemée d'épreuves et de défis qui ont servi à affermir ma foi.</p>
+            </div>
+
+            <h3 class="section-title">La force dans la fragilité</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Ma grâce te suffit, car ma puissance s'accomplit dans la faiblesse." — 2 Corinthiens 12:9
+                </div>
+                
+                <p>Je reconnais être quelqu'un de très ouvert et sensible. Même si les autres ne remarquent pas toujours cette sensibilité, ce "côté fragile" fait partie de moi. Mais j'ai découvert une vérité libératrice : <strong>dans cette fragilité, le Seigneur est mon consolateur</strong>.</p>
+                
+                <p>Saint Paul lui-même a compris ce paradoxe : <em>"C'est pourquoi je me plais dans les faiblesses, dans les outrages, dans les calamités, dans les persécutions, dans les détresses, pour Christ ; car, quand je suis faible, c'est alors que je suis fort"</em> (2 Corinthiens 12:10). Notre fragilité devient le lieu privilégié où la grâce de Dieu se manifeste.</p>
+                
+                <div class="highlight">
+                    À chaque fois que j'ai un problème ou que je pleure, c'est souvent durant la sainte messe ou dans le chant que mon cœur retrouve la paix. Comme le dit le Psaume 34:19 : <em>"L'Éternel est près de ceux qui ont le cœur brisé, et il sauve ceux qui ont l'esprit dans l'abattement."</em>
+                </div>
+                
+                <p>L'Eucharistie est devenue mon refuge, le lieu où je rencontre le Consolateur. Jésus nous a promis : <em>"Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos"</em> (Matthieu 11:28). Cette promesse se réalise chaque fois que je m'approche de l'autel avec un cœur contrit.</p>
+            </div>
+
+            <h3 class="section-title">Un amour protecteur et maternel</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Comme un père a compassion de ses enfants, l'Éternel a compassion de ceux qui le craignent." — Psaume 103:13
+                </div>
+                
+                <p>Le Seigneur agit envers moi comme une mère toujours bienveillante et protectrice, auprès de qui chaque enfant finit par se réfugier. L'Écriture révèle cette tendresse divine : <em>"Comme un homme que sa mère console, ainsi je vous consolerai"</em> (Isaïe 66:13).</p>
+                
+                <p><strong>Dans ma vie quotidienne, je fais l'expérience de cet amour maternel de Dieu :</strong></p>
+                
+                <ul>
+                    <li><strong>Il me console quand je pleure.</strong> <em>"L'Éternel est près de ceux qui ont le cœur brisé"</em> (Psaume 34:19)</li>
+                    <li><strong>Il me rassure quand je doute.</strong> <em>"Ne crains rien, car je suis avec toi"</em> (Isaïe 41:10)</li>
+                    <li><strong>Il me répond quand je l'appelle.</strong> <em>"Invoque-moi, et je te répondrai"</em> (Jérémie 33:3)</li>
+                </ul>
+                
+                <p>Même si je manque souvent de discernement lorsqu'il me parle — comme Samuel qui ne reconnaissait pas au début la voix de l'Éternel (1 Samuel 3:4-10) — je finis toujours par me rendre compte que <strong>tout ce qui arrive est son œuvre</strong>. Comme le proclame Romains 8:28 : <em>"Nous savons, du reste, que toutes choses concourent au bien de ceux qui aiment Dieu."</em></p>
+                
+                <div class="meditation">
+                    <h4>L'amour providentiel</h4>
+                    <p>Jésus nous rassure sur la sollicitude du Père : <em>"Regardez les oiseaux du ciel : ils ne sèment ni ne moissonnent, et ils n'amassent rien dans des greniers ; et votre Père céleste les nourrit. Ne valez-vous pas beaucoup plus qu'eux ?"</em> (Matthieu 6:26). Si Dieu prend soin des oiseaux, combien plus veille-t-il sur ses enfants !</p>
+                </div>
+            </div>
+
+            <h3 class="section-title">Le processus de maturation spirituelle</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Celui qui n'a point épargné son propre Fils, mais qui l'a livré pour nous tous, comment ne nous donnera-t-il pas aussi toutes choses avec lui ?" — Romains 8:32
+                </div>
+                
+                <p>Pour moi, <strong>le Seigneur est l'élément vital dont le manque me détruirait</strong>. Comme Jésus l'a déclaré : <em>"Je suis le cep, vous êtes les sarments. Celui qui demeure en moi et en qui je demeure porte beaucoup de fruit, car sans moi vous ne pouvez rien faire"</em> (Jean 15:5). Séparé du Christ, je me dessèche ; uni à Lui, je porte du fruit.</p>
+                
+                <p>Bien que je fasse beaucoup de bêtises, je m'efforce de changer car il prend soin de moi. Saint Jean nous rassure : <em>"Si nous confessons nos péchés, il est fidèle et juste pour nous les pardonner, et pour nous purifier de toute iniquité"</em> (1 Jean 1:9). Sa miséricorde est infinie.</p>
+                
+                <div class="meditation">
+                    <h4>Une vérité transformante</h4>
+                    <p>J'ai compris que lorsque le Seigneur t'aime, il planifie tout pour toi, et ses plans sont destinés à nous combler de joie. Comme l'affirme Jérémie 29:11 : <em>"Car je connais les projets que j'ai formés sur vous, dit l'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l'espérance."</em></p>
+                    
+                    <p>Cependant, avant d'atteindre cette joie, il faut passer par une certaine maturation. Hébreux 12:11 nous l'enseigne : <em>"Il est vrai que toute correction semble d'abord un sujet de tristesse, et non de joie ; mais elle produit plus tard pour ceux qui ont été ainsi exercés un fruit paisible de justice."</em></p>
+                </div>
+                
+                <p>Cette période peut parfois être perçue faussement comme un rejet ou un abandon total de Dieu. Dieu peut paraître calme ou silencieux — ce que les mystiques appellent "la nuit obscure de l'âme". Mais c'est souvent parce que nous sommes "faibles en esprit" et que nous ne comprenons pas ce qu'il veut nous dire.</p>
+                
+                <div class="highlight">
+                    <strong>Le silence de Dieu n'est pas son absence.</strong> Le prophète Élie a dû apprendre que Dieu ne se manifeste pas toujours dans le spectaculaire, mais souvent dans <em>"le murmure doux et léger"</em> (1 Rois 19:12). Jésus Lui-même a connu ce silence du Père à Gethsémani et sur la croix, mais il est resté fidèle. Comme le dit Osée 2:16 : <em>"Je la conduirai au désert, et je parlerai à son cœur."</em>
+                </div>
+            </div>
+
+            <h3 class="section-title">Objectif et Vision d'avenir</h3>
+            <div class="section-content">
+                <div class="bible-reference">
+                    "Le cœur de l'homme médite sa voie, mais c'est l'Éternel qui dirige ses pas." — Proverbes 16:9
+                </div>
+                
+                <p>Comme on dit : <em>"L'homme propose, Dieu dispose"</em>. Cette sagesse populaire reflète la vérité biblique. Je pense être actuellement dans une <strong>phase de préparation</strong>, semblable à celle de Joseph en Égypte ou de Moïse dans le désert de Madian.</p>
+                
+                <p>Jésus Lui-même a passé trente ans dans la vie cachée à Nazareth avant de commencer son ministère public. Cette longue préparation n'était pas du temps perdu, mais un temps de croissance nécessaire : <em>"Jésus croissait en sagesse, en stature, et en grâce, devant Dieu et devant les hommes"</em> (Luc 2:52).</p>
+                
+                <p><strong>Mon objectif premier est de :</strong></p>
+                <ol>
+                    <li><strong>Grandir spirituellement</strong> — <em>"Désirez, comme des enfants nouveau-nés, le lait spirituel et pur, afin que par lui vous croissiez pour le salut"</em> (1 Pierre 2:2)</li>
+                    
+                    <li><strong>Comprendre les réalités du monde pour en tirer des leçons</strong> — <em>"Ne vous conformez pas au siècle présent, mais soyez transformés par le renouvellement de l'intelligence, afin que vous discerniez quelle est la volonté de Dieu"</em> (Romains 12:2)</li>
+                    
+                    <li><strong>Me conformer à la Bible pour mieux connaître Dieu</strong> — <em>"Toute Écriture est inspirée de Dieu, et utile pour enseigner, pour convaincre, pour corriger, pour instruire dans la justice"</em> (2 Timothée 3:16)</li>
+                    
+                    <li><strong>Approfondir la compréhension des relations humaines</strong> (entre Dieu et les hommes, et des hommes entre eux) — <em>"Tu aimeras le Seigneur, ton Dieu, de tout ton cœur [...] et ton prochain comme toi-même"</em> (Matthieu 22:37-39)</li>
+                </ol>
+                
+                <div class="highlight">
+                    <strong>La promesse de Dieu pour ceux qui le cherchent :</strong> <em>"Cherchez premièrement le royaume et la justice de Dieu ; et toutes ces choses vous seront données par-dessus"</em> (Matthieu 6:33). Je confie mon avenir à celui qui m'a créé, sachant que <em>"Dieu opère en vous le vouloir et le faire, selon son bon plaisir"</em> (Philippiens 2:13).
+                </div>
+            </div>
+        </div>
+
+        <!-- Espace de Prière -->
+        <div id="priere" class="prayer-box">
+            <h3>🙏 Espace de Prière 🙏</h3>
+            <p><em>"Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos."</em></p>
+            <p style="margin-top: 1rem;">— Matthieu 11:28</p>
+            <div style="margin-top: 2rem; padding: 2rem; background: white; border-radius: 10px;">
+                <h4 style="color: #667eea; margin-bottom: 1rem;">Prière du jour</h4>
+                <p style="text-align: left;">
+                    Seigneur Jésus,<br><br>
+                    Tu es mon échelle vers le Père, mon consolateur dans la nuit, ma force dans la fragilité. 
+                    Aide-moi à ne jamais mépriser les dons que Tu m'as confiés. Que je garde précieusement 
+                    ma vocation et ma foi comme des trésors éternels.<br><br>
+                    Dans mes moments d'exil et de désert, rappelle-moi que Tu me prépares pour une mission plus grande. 
+                    Brise mon orgueil, forme mon cœur, et conduis-moi toujours vers Toi.<br><br>
+                    Marie, Mère de Dieu et notre Mère, intercède pour moi comme Rebecca a protégé ses fils. 
+                    Couvre-moi de ton manteau maternel.<br><br>
+                    Amen. ✝
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>✝ "Car Dieu a tant aimé le monde qu'il a donné son Fils unique" — Jean 3:16 ✝</p>
+        <p style="margin-top: 1rem; opacity: 0.8;">Que la paix du Christ soit toujours avec vous</p>
+    </footer>
+
+    <div class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        ↑
+    </div>
+
+    <script>
+        // Afficher le bouton de retour en haut lors du scroll
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        // Navigation smooth
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

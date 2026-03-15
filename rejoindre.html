@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rejoindre le Groupe — Alpha et Oméga</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold:       #C1A461;
+      --gold-light: #D9C07E;
+      --gold-dark:  #9B7F3E;
+      --black:      #0A0A0A;
+      --anthracite: #1A1A1A;
+      --dark:       #141414;
+      --mid:        #2C2C2C;
+      --grey:       #8A8A8A;
+      --white:      #FAFAFA;
+      --serif:      'Playfair Display', Georgia, serif;
+      --sans:       'Montserrat', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+    /* ── BACKGROUND RADIAL GLOW ── */
+    .bg-glow {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 30%, rgba(193,164,97,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 80% 80%, rgba(193,164,97,.04) 0%, transparent 60%);
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 20px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(10,10,10,.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(193,164,97,.12);
+    }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-symbol {
+      width: 34px; height: 34px; border: 1.5px solid var(--gold);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 13px; color: var(--gold);
+    }
+    .logo-text { font-family: var(--serif); font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: .06em; }
+    .logo-text span { color: var(--gold); }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--grey);
+      text-decoration: none; border: 1px solid rgba(255,255,255,.1);
+      padding: 9px 18px; transition: color .2s, border-color .2s;
+    }
+    .back-btn::before { content: '←'; font-size: 13px; }
+    .back-btn:hover { color: var(--gold); border-color: var(--gold); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      position: relative; z-index: 1;
+      padding: 140px 48px 60px;
+      text-align: center;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 80px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .hero-label {
+      font-size: 9px; font-weight: 600; letter-spacing: .32em;
+      text-transform: uppercase; color: var(--gold);
+      display: block; margin-bottom: 18px;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 60px);
+      font-weight: 400; line-height: 1.1; color: var(--white);
+      margin-bottom: 14px;
+      animation: fadeUp .8s .15s ease both;
+    }
+    .hero-title em { font-style: italic; color: var(--gold-light); }
+    .hero-sub {
+      font-size: 13px; font-weight: 300; color: rgba(255,255,255,.5);
+      max-width: 480px; margin: 0 auto 0;
+      line-height: 1.85; letter-spacing: .04em;
+      animation: fadeUp .8s .3s ease both;
+    }
+
+    /* whatsapp icon line */
+    .whatsapp-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-top: 28px;
+      font-size: 11px; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--gold);
+      border: 1px solid rgba(193,164,97,.25);
+      padding: 10px 22px;
+      animation: fadeUp .8s .45s ease both;
+    }
+    .whatsapp-badge .wa-icon {
+      width: 18px; height: 18px;
+      background: #25D366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: var(--black); flex-shrink: 0;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── FORM SECTION ── */
+    .form-section {
+      position: relative; z-index: 1;
+      max-width: 700px; margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    /* Card */
+    .form-card {
+      background: var(--anthracite);
+      border: 1px solid rgba(193,164,97,.15);
+      padding: 52px 52px 44px;
+      position: relative;
+      animation: fadeUp .8s .5s ease both;
+    }
+    .form-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .form-intro {
+      text-align: center; margin-bottom: 44px;
+    }
+    .form-intro-label {
+      font-size: 9px; font-weight: 600; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--gold);
+      display: block; margin-bottom: 12px;
+    }
+    .form-intro h2 {
+      font-family: var(--serif); font-size: 24px; font-weight: 400;
+      color: var(--white); margin-bottom: 10px;
+    }
+    .form-intro p {
+      font-size: 12px; font-weight: 300; color: rgba(255,255,255,.45);
+      line-height: 1.8;
+    }
+
+    /* Field groups */
+    .field-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 18px; margin-bottom: 18px;
+    }
+    .field-row.full { grid-template-columns: 1fr; }
+
+    .field-group { display: flex; flex-direction: column; gap: 8px; }
+
+    .field-label {
+      font-size: 9px; font-weight: 600; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .field-label .required { color: var(--gold-light); margin-left: 3px; }
+
+    .field-input,
+    .field-select,
+    .field-textarea {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: 13px; font-weight: 300;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color .25s, background .25s;
+      width: 100%;
+      appearance: none;
+    }
+    .field-input::placeholder,
+    .field-textarea::placeholder { color: rgba(255,255,255,.22); }
+    .field-input:focus,
+    .field-select:focus,
+    .field-textarea:focus {
+      border-color: var(--gold);
+      background: rgba(193,164,97,.05);
+    }
+    .field-select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C1A461'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .field-select option { background: var(--anthracite); color: var(--white); }
+    .field-textarea { resize: none; height: 100px; line-height: 1.7; }
+
+    /* Phone prefix row */
+    .phone-row { display: flex; gap: 10px; align-items: flex-end; }
+    .phone-prefix {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--gold);
+      font-family: var(--sans); font-size: 13px; font-weight: 600;
+      padding: 13px 14px; white-space: nowrap; flex-shrink: 0;
+      letter-spacing: .06em;
+      cursor: pointer; outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23C1A461'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+      transition: border-color .25s;
+    }
+    .phone-prefix:focus { border-color: var(--gold); outline: none; }
+    .phone-prefix option { background: var(--anthracite); }
+    .phone-number { flex: 1; }
+
+    /* Separator */
+    .form-separator {
+      display: flex; align-items: center; gap: 16px;
+      margin: 32px 0 28px;
+    }
+    .form-separator-line { flex: 1; height: 1px; background: rgba(255,255,255,.06); }
+    .form-separator-symbol { color: var(--gold); font-size: 12px; opacity: .6; }
+
+    /* Checkbox group */
+    .checkbox-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; }
+    .checkbox-item {
+      display: flex; align-items: flex-start; gap: 12px; cursor: pointer;
+    }
+    .checkbox-item input[type="checkbox"] { display: none; }
+    .checkbox-box {
+      width: 18px; height: 18px; flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px; transition: border-color .2s, background .2s;
+    }
+    .checkbox-item input:checked + .checkbox-box {
+      border-color: var(--gold);
+      background: rgba(193,164,97,.15);
+    }
+    .checkbox-item input:checked + .checkbox-box::after {
+      content: '✓'; font-size: 11px; color: var(--gold); font-weight: 600;
+    }
+    .checkbox-label {
+      font-size: 12px; font-weight: 300; color: rgba(255,255,255,.65); line-height: 1.6;
+    }
+    .checkbox-label strong { color: var(--white); font-weight: 600; }
+
+    /* Consent */
+    .consent-box {
+      background: rgba(193,164,97,.05);
+      border: 1px solid rgba(193,164,97,.15);
+      padding: 16px 18px; margin-bottom: 32px;
+    }
+    .consent-box p {
+      font-size: 11px; font-weight: 300; color: rgba(255,255,255,.45);
+      line-height: 1.75;
+    }
+    .consent-box strong { color: var(--gold); font-weight: 600; }
+
+    /* Submit button */
+    .submit-btn {
+      width: 100%; padding: 17px;
+      background: var(--gold); color: var(--black);
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      transition: background .2s, transform .15s;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+    }
+    .submit-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn .wa-dot {
+      width: 20px; height: 20px; background: #25D366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;
+    }
+
+    /* Success overlay */
+    .success-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(10,10,10,.92);
+      backdrop-filter: blur(16px);
+      align-items: center; justify-content: center;
+      flex-direction: column; text-align: center;
+      padding: 32px;
+    }
+    .success-overlay.show { display: flex; }
+    .success-icon {
+      width: 80px; height: 80px;
+      border: 2px solid var(--gold); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin-bottom: 28px;
+      animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .success-title {
+      font-family: var(--serif); font-size: clamp(24px, 4vw, 38px);
+      font-weight: 400; color: var(--white); margin-bottom: 12px;
+    }
+    .success-title em { font-style: italic; color: var(--gold-light); }
+    .success-text {
+      font-size: 13px; font-weight: 300; color: rgba(255,255,255,.55);
+      line-height: 1.85; max-width: 420px; margin-bottom: 36px;
+    }
+    .success-wa {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #25D366; color: var(--black);
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      padding: 14px 28px; text-decoration: none;
+      transition: opacity .2s;
+    }
+    .success-wa:hover { opacity: .85; }
+    .close-overlay {
+      position: absolute; top: 28px; right: 32px;
+      background: none; border: none; color: var(--grey);
+      font-size: 24px; cursor: pointer; transition: color .2s;
+    }
+    .close-overlay:hover { color: var(--gold); }
+
+    /* Error states */
+    .field-input.error, .field-select.error { border-color: #E05555; }
+    .error-msg {
+      font-size: 10px; color: #E07070; font-weight: 500;
+      letter-spacing: .06em; display: none; margin-top: 4px;
+    }
+    .error-msg.show { display: block; }
+
+    /* Info strip */
+    .info-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-bottom: 52px;
+      animation: fadeUp .8s .6s ease both;
+    }
+    .info-item {
+      background: var(--anthracite);
+      border: 1px solid rgba(255,255,255,.04);
+      padding: 24px 20px; text-align: center;
+    }
+    .info-icon { font-size: 22px; margin-bottom: 10px; display: block; }
+    .info-title {
+      font-family: var(--serif); font-size: 15px; font-weight: 600;
+      color: var(--white); margin-bottom: 6px;
+    }
+    .info-text { font-size: 11px; font-weight: 300; color: rgba(255,255,255,.4); line-height: 1.6; }
+
+    /* Footer */
+    footer {
+      position: relative; z-index: 1;
+      background: var(--black); border-top: 1px solid rgba(193,164,97,.1);
+      padding: 32px 48px; display: flex; justify-content: space-between; align-items: center;
+    }
+    footer p { font-size: 10px; color: rgba(255,255,255,.2); letter-spacing: .06em; }
+    footer .gold-text { color: var(--gold); }
+
+    /* Responsive */
+    @media (max-width: 680px) {
+      header { padding: 16px 20px; }
+      .page-hero { padding: 110px 20px 50px; }
+      .form-section { padding: 0 16px 80px; }
+      .form-card { padding: 32px 24px 28px; }
+      .field-row { grid-template-columns: 1fr; }
+      .info-strip { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <a href="predication-site.html" class="logo">
+    <div class="logo-symbol">Αω</div>
+    <span class="logo-text">Alpha <span>&</span> Oméga</span>
+  </a>
+  <a href="predication-site.html" class="back-btn">Retour à l'accueil</a>
+</header>
+
+<!-- ══ HERO ══ -->
+<div class="page-hero">
+  <span class="hero-label">Communauté Alpha et Oméga</span>
+  <h1 class="hero-title">Rejoindre <em>la Communauté</em></h1>
+  <p class="hero-sub">Remplissez le formulaire ci-dessous. Votre demande nous sera transmise directement et nous vous ajouterons au groupe WhatsApp de prière.</p>
+  <div class="whatsapp-badge">
+    <span class="wa-icon">💬</span>
+    Groupe WhatsApp — Alpha et Oméga
+  </div>
+</div>
+
+<!-- ══ INFO STRIP ══ -->
+<div class="form-section">
+  <div class="info-strip">
+    <div class="info-item">
+      <span class="info-icon">🙏</span>
+      <div class="info-title">Prière</div>
+      <div class="info-text">Partagez vos intentions de prière avec la communauté</div>
+    </div>
+    <div class="info-item">
+      <span class="info-icon">📖</span>
+      <div class="info-title">Enseignements</div>
+      <div class="info-text">Recevez les prédications et méditations en avant-première</div>
+    </div>
+    <div class="info-item">
+      <span class="info-icon">✦</span>
+      <div class="info-title">Fraternité</div>
+      <div class="info-text">Un espace de partage spirituel et d'édification mutuelle</div>
+    </div>
+  </div>
+
+  <!-- ══ FORM CARD ══ -->
+  <div class="form-card">
+
+    <div class="form-intro">
+      <span class="form-intro-label">Formulaire d'inscription</span>
+      <h2>Votre Fiche d'Adhésion</h2>
+      <p>Tous les champs marqués d'un <span style="color:var(--gold-light)">✦</span> sont obligatoires.</p>
+    </div>
+
+    <form id="joinForm" novalidate>
+
+      <!-- Nom / Prénom -->
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label" for="prenom">Prénom <span class="required">✦</span></label>
+          <input class="field-input" type="text" id="prenom" name="prenom" placeholder="Votre prénom" autocomplete="given-name" />
+          <span class="error-msg" id="err-prenom">Veuillez saisir votre prénom.</span>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="nom">Nom <span class="required">✦</span></label>
+          <input class="field-input" type="text" id="nom" name="nom" placeholder="Votre nom de famille" autocomplete="family-name" />
+          <span class="error-msg" id="err-nom">Veuillez saisir votre nom.</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="field-row full">
+        <div class="field-group">
+          <label class="field-label" for="email">Adresse e-mail <span class="required">✦</span></label>
+          <input class="field-input" type="email" id="email" name="email" placeholder="votre@email.com" autocomplete="email" />
+          <span class="error-msg" id="err-email">Veuillez saisir une adresse e-mail valide.</span>
+        </div>
+      </div>
+
+      <!-- Téléphone WhatsApp -->
+      <div class="field-row full">
+        <div class="field-group">
+          <label class="field-label" for="telephone">Numéro WhatsApp <span class="required">✦</span></label>
+          <div class="phone-row">
+            <select class="phone-prefix" id="indicatif" name="indicatif">
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+32">🇧🇪 +32</option>
+              <option value="+41">🇨🇭 +41</option>
+              <option value="+1">🇨🇦 +1</option>
+              <option value="+225">🇨🇮 +225</option>
+              <option value="+237">🇨🇲 +237</option>
+              <option value="+243">🇨🇩 +243</option>
+              <option value="+242">🇨🇬 +242</option>
+              <option value="+221">🇸🇳 +221</option>
+              <option value="+229">🇧🇯 +229</option>
+              <option value="+228">🇹🇬 +228</option>
+              <option value="+226">🇧🇫 +226</option>
+              <option value="+223">🇲🇱 +223</option>
+              <option value="+213">🇩🇿 +213</option>
+              <option value="+212">🇲🇦 +212</option>
+              <option value="+216">🇹🇳 +216</option>
+              <option value="+261">🇲🇬 +261</option>
+              <option value="+509">🇭🇹 +509</option>
+              <option value="+596">🇲🇶 +596</option>
+              <option value="+590">🇬🇵 +590</option>
+            </select>
+            <input class="field-input phone-number" type="tel" id="telephone" name="telephone"
+              placeholder="6 12 34 56 78" autocomplete="tel" />
+          </div>
+          <span class="error-msg" id="err-tel">Veuillez saisir votre numéro WhatsApp.</span>
+        </div>
+      </div>
+
+      <!-- Pays / Ville -->
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label" for="pays">Pays <span class="required">✦</span></label>
+          <select class="field-select" id="pays" name="pays">
+            <option value="" disabled selected>Sélectionner…</option>
+            <option>France</option>
+            <option>Belgique</option>
+            <option>Suisse</option>
+            <option>Canada</option>
+            <option>Côte d'Ivoire</option>
+            <option>Cameroun</option>
+            <option>République Démocratique du Congo</option>
+            <option>Congo-Brazzaville</option>
+            <option>Sénégal</option>
+            <option>Bénin</option>
+            <option>Togo</option>
+            <option>Burkina Faso</option>
+            <option>Mali</option>
+            <option>Algérie</option>
+            <option>Maroc</option>
+            <option>Tunisie</option>
+            <option>Madagascar</option>
+            <option>Haïti</option>
+            <option>Martinique</option>
+            <option>Guadeloupe</option>
+            <option>Autre</option>
+          </select>
+          <span class="error-msg" id="err-pays">Veuillez sélectionner votre pays.</span>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="ville">Ville</label>
+          <input class="field-input" type="text" id="ville" name="ville" placeholder="Votre ville" />
+        </div>
+      </div>
+
+      <div class="form-separator">
+        <div class="form-separator-line"></div>
+        <span class="form-separator-symbol">✦</span>
+        <div class="form-separator-line"></div>
+      </div>
+
+      <!-- Centres d'intérêt -->
+      <div class="field-group" style="margin-bottom:20px;">
+        <label class="field-label">Je souhaite recevoir</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="interet" value="predications" checked />
+            <span class="checkbox-box"></span>
+            <span class="checkbox-label"><strong>Prédications & méditations</strong> — messages audio/vidéo et textes</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="interet" value="priere" checked />
+            <span class="checkbox-box"></span>
+            <span class="checkbox-label"><strong>Chaîne de prière</strong> — intentions et veillées d'intercession</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="interet" value="agenda" />
+            <span class="checkbox-box"></span>
+            <span class="checkbox-label"><strong>Agenda & événements</strong> — retraites, conférences, cultes spéciaux</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="interet" value="nouvelles" />
+            <span class="checkbox-box"></span>
+            <span class="checkbox-label"><strong>Nouvelles de la communauté</strong> — annonces et partages fraternels</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="field-row full">
+        <div class="field-group">
+          <label class="field-label" for="message">Un mot pour vous présenter <span style="color:var(--grey);font-weight:300;">(facultatif)</span></label>
+          <textarea class="field-textarea" id="message" name="message"
+            placeholder="Comment avez-vous connu Alpha et Oméga ? Partagez ce que vous cherchez dans cette communauté…"></textarea>
+        </div>
+      </div>
+
+      <!-- Consentement -->
+      <div class="consent-box">
+        <p>En soumettant ce formulaire, vous acceptez que vos informations soient utilisées uniquement pour vous ajouter au groupe WhatsApp <strong>Alpha et Oméga</strong> et vous envoyer les contenus sélectionnés. Aucune donnée n'est partagée avec des tiers.</p>
+      </div>
+
+      <!-- Consentement checkbox -->
+      <label class="checkbox-item" style="margin-bottom:28px;">
+        <input type="checkbox" id="consent" name="consent" />
+        <span class="checkbox-box"></span>
+        <span class="checkbox-label">J'accepte les conditions ci-dessus et je confirme que ce numéro WhatsApp m'appartient. <span style="color:var(--gold-light)">✦</span></span>
+      </label>
+      <span class="error-msg" id="err-consent" style="margin-top:-20px;margin-bottom:16px;display:none;">Veuillez accepter les conditions.</span>
+
+      <!-- SUBMIT -->
+      <button type="submit" class="submit-btn">
+        <span class="wa-dot">💬</span>
+        Envoyer ma demande d'adhésion
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<!-- ══ SUCCESS OVERLAY ══ -->
+<div class="success-overlay" id="successOverlay">
+  <button class="close-overlay" id="closeSuccess">✕</button>
+  <div class="success-icon">✦</div>
+  <h2 class="success-title">Demande <em>envoyée !</em></h2>
+  <p class="success-text">
+    Votre fiche d'adhésion a été transmise à l'équipe Alpha et Oméga.<br>
+    Nous vous ajouterons au groupe WhatsApp dans les plus brefs délais.<br><br>
+    <strong style="color:var(--gold);">Que le Seigneur vous bénisse !</strong>
+  </p>
+  <a href="predication-site.html" class="success-wa">
+    💬 &nbsp; Retour à l'accueil
+  </a>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p>© 2026 <span class="gold-text">Alpha et Oméga</span> — Groupe de Prière</p>
+  <p>Que la paix du <span class="gold-text">Christ</span> soit avec vous</p>
+</footer>
+
+<script>
+  // ── FORM SUBMIT ──
+  document.getElementById('joinForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    let valid = true;
+
+    // Validate prénom
+    const prenom = document.getElementById('prenom');
+    const errPrenom = document.getElementById('err-prenom');
+    if (!prenom.value.trim()) {
+      prenom.classList.add('error'); errPrenom.classList.add('show'); valid = false;
+    } else { prenom.classList.remove('error'); errPrenom.classList.remove('show'); }
+
+    // Validate nom
+    const nom = document.getElementById('nom');
+    const errNom = document.getElementById('err-nom');
+    if (!nom.value.trim()) {
+      nom.classList.add('error'); errNom.classList.add('show'); valid = false;
+    } else { nom.classList.remove('error'); errNom.classList.remove('show'); }
+
+    // Validate email
+    const email = document.getElementById('email');
+    const errEmail = document.getElementById('err-email');
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailReg.test(email.value.trim())) {
+      email.classList.add('error'); errEmail.classList.add('show'); valid = false;
+    } else { email.classList.remove('error'); errEmail.classList.remove('show'); }
+
+    // Validate téléphone
+    const tel = document.getElementById('telephone');
+    const errTel = document.getElementById('err-tel');
+    if (!tel.value.trim()) {
+      tel.classList.add('error'); errTel.classList.add('show'); valid = false;
+    } else { tel.classList.remove('error'); errTel.classList.remove('show'); }
+
+    // Validate pays
+    const pays = document.getElementById('pays');
+    const errPays = document.getElementById('err-pays');
+    if (!pays.value) {
+      pays.classList.add('error'); errPays.classList.add('show'); valid = false;
+    } else { pays.classList.remove('error'); errPays.classList.remove('show'); }
+
+    // Validate consent
+    const consent = document.getElementById('consent');
+    const errConsent = document.getElementById('err-consent');
+    if (!consent.checked) {
+      errConsent.style.display = 'block'; valid = false;
+    } else { errConsent.style.display = 'none'; }
+
+    if (!valid) return;
+
+    // ── BUILD EMAIL ──
+    const indicatif = document.getElementById('indicatif').value;
+    const ville = document.getElementById('ville').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    // Collect checked interests
+    const interets = [...document.querySelectorAll('input[name="interet"]:checked')]
+      .map(cb => cb.value).join(', ') || 'Non précisé';
+
+    const fullPhone = indicatif + ' ' + tel.value.trim();
+
+    const subject = encodeURIComponent('Demande d\'adhésion — Alpha et Oméga — ' + prenom.value.trim() + ' ' + nom.value.trim());
+
+    const body = encodeURIComponent(
+      '=== NOUVELLE DEMANDE D\'ADHÉSION — ALPHA ET OMÉGA ===\n\n' +
+      'PRÉNOM       : ' + prenom.value.trim() + '\n' +
+      'NOM          : ' + nom.value.trim() + '\n' +
+      'E-MAIL       : ' + email.value.trim() + '\n' +
+      'WHATSAPP     : ' + fullPhone + '\n' +
+      'PAYS         : ' + pays.value + '\n' +
+      'VILLE        : ' + (ville || 'Non précisé') + '\n' +
+      'INTÉRÊTS     : ' + interets + '\n\n' +
+      (message ? 'MESSAGE :\n' + message + '\n\n' : '') +
+      '---\n' +
+      'Demande envoyée depuis le site Alpha et Oméga.\n' +
+      'Merci d\'ajouter cette personne au groupe WhatsApp.'
+    );
+
+    // ── OPEN MAIL CLIENT ──
+    // ⚠️ Remplacez l'adresse ci-dessous par votre email réel
+    const destEmail = 'alphaetomega.groupe@gmail.com';
+    window.location.href = 'mailto:' + destEmail + '?subject=' + subject + '&body=' + body;
+
+    // Show success after small delay (let mailto open)
+    setTimeout(() => {
+      document.getElementById('successOverlay').classList.add('show');
+    }, 800);
+  });
+
+  // Close success overlay
+  document.getElementById('closeSuccess').addEventListener('click', () => {
+    document.getElementById('successOverlay').classList.remove('show');
+  });
+
+  // Live validation — remove error on typing
+  ['prenom','nom','email','telephone'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function() {
+      this.classList.remove('error');
+      document.getElementById('err-' + (id === 'telephone' ? 'tel' : id)).classList.remove('show');
+    });
+  });
+  document.getElementById('pays').addEventListener('change', function() {
+    this.classList.remove('error');
+    document.getElementById('err-pays').classList.remove('show');
+  });
+  document.getElementById('consent').addEventListener('change', function() {
+    if (this.checked) document.getElementById('err-consent').style.display = 'none';
+  });
+</script>
+
+</body>
+</html>

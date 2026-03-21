@@ -472,8 +472,116 @@ function applyTranslation(translatedItems) {
   });
 }
 
+<script>
+// ── TRADUCTEUR FR ↔ IT ──────────────────────────────────────────
+let currentLang = 'fr';
+let originalHTML = null;
+let cachedIT = null; // cache pour éviter de retraduire
+
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbxWdpWRU0BmgIiX3jo5YGCXe3Z6d6GRVHOGJp288-ixLqqLkMS7W6kzTvjQDk72mMg4GA/exec'; // ← colle ton URL ici
+
+async function switchLang(lang) {
+  if (lang === currentLang) return;
+
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+
+  if (lang === 'fr') {
+    if (originalHTML) document.querySelector('main').innerHTML = originalHTML;
+    currentLang = 'fr';
+    reObserve();
+    return;
+  }
+
+  // Si déjà traduit, on réutilise le cache
+  if (cachedIT) {
+    if (!originalHTML) originalHTML = document.querySelector('main').innerHTML;
+    applyTranslation(cachedIT);
+    currentLang = lang;
+    reObserve();
+    return;
+  }
+
+  showOverlay(true);
+  if (!originalHTML) originalHTML = document.querySelector('main').innerHTML;
+
+  try {
+    const items = extractTranslatableText();
+    const translated = await translateWithProxy(items, 'italien');
+    cachedIT = translated;
+    applyTranslation(translated);
+    currentLang = lang;
+    reObserve();
+  } catch (err) {
+    console.error('Erreur traduction:', err);
+    alert('La traduction a échoué. Vérifiez la console (F12) pour les détails.');
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === 'fr');
+    });
+  } finally {
+    showOverlay(false);
+  }
+}
+
+function showOverlay(state) {
+  document.getElementById('translateOverlay').classList.toggle('show', state);
+}
+
+function extractTranslatableText() {
+  const main = document.querySelector('main');
+  const nodes = main.querySelectorAll(
+    'p, h2, h3, blockquote p, blockquote cite, ' +
+    '.s-label, .key-tag, .father-tag, .father p, ' +
+    '.father cite, .key p, .prayer, .prayer-tag, li p'
+  );
+  const result = [];
+  nodes.forEach((n, i) => {
+    const txt = n.innerText.trim();
+    if (txt) result.push({ id: i, text: txt });
+  });
+  return result;
+}
+
+async function translateWithProxy(items, langName) {
+  const response = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // text/plain évite le preflight CORS
+    body: JSON.stringify({
+      system: `Tu es un traducteur théologique expert. Traduis chaque élément du tableau JSON du français vers le ${langName}.
+Règles :
+- Conserve le registre solennel et liturgique.
+- Les citations bibliques doivent utiliser la version catholique officielle en ${langName}.
+- Réponds UNIQUEMENT avec un tableau JSON valide, sans texte autour, sans balises markdown.
+- Ne traduis pas les noms propres (Jacob, Rachel, Laban, Jésus, Paul, Origène…).`,
+      messages: [{
+        role: 'user',
+        content: `Traduis ce tableau en ${langName} :\n${JSON.stringify(items)}`
+      }]
+    })
+  });
+
+  const wrapper = await response.json();
+  if (!wrapper.ok) throw new Error(wrapper.error || 'Erreur proxy');
+
+  const raw = wrapper.data.content.map(c => c.text || '').join('');
+  const clean = raw.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+function applyTranslation(translatedItems) {
+  const main = document.querySelector('main');
+  const nodes = main.querySelectorAll(
+    'p, h2, h3, blockquote p, blockquote cite, ' +
+    '.s-label, .key-tag, .father-tag, .father p, ' +
+    '.father cite, .key p, .prayer, .prayer-tag, li p'
+  );
+  translatedItems.forEach(item => {
+    if (nodes[item.id]) nodes[item.id].innerText = item.text;
+  });
+}
+
 function reObserve() {
-  // Relancer les animations scroll-reveal après injection
   const els = document.querySelectorAll('.r');
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
@@ -481,7 +589,7 @@ function reObserve() {
   els.forEach(el => { el.classList.remove('v'); obs.observe(el); });
 }
 // ────────────────────────────────────────────────────────────────
-    </script>
+</script>
 </head>
 <body>
 <!-- Language Switcher -->

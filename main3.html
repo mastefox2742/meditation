@@ -17,7 +17,28 @@
     --red:    #7A2828;
     --red2:   #A03535;
   }
-
+.btn-retour {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 100;
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border: 1px solid rgba(198,168,74,0.3);
+  padding: 0.55rem 1.1rem;
+  background: rgba(14,12,7,0.75);
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+.btn-retour:hover {
+  background: rgba(198,168,74,0.12);
+  border-color: var(--gold);
+  color: var(--gold2);
+}
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior: smooth; }
 
@@ -269,15 +290,223 @@
     main { padding:0 1.1rem 4rem; }
     .ring { display:none; }
   }
+  /* ── LANGUAGE SWITCHER ── */
+.lang-switcher {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(198,168,74,0.3);
+  background: rgba(14,12,7,0.8);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.lang-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.lang-btn.active {
+  color: var(--gold);
+  background: rgba(198,168,74,0.1);
+}
+
+.lang-btn:hover:not(.active) {
+  color: var(--cream);
+  background: rgba(198,168,74,0.05);
+}
+
+.lang-sep {
+  width: 1px;
+  height: 1.2rem;
+  background: rgba(198,168,74,0.2);
+  flex-shrink: 0;
+}
+
+/* Overlay de traduction */
+.translate-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(14,12,7,0.92);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.translate-overlay.show {
+  display: flex;
+}
+
+.translate-spinner {
+  width: 36px; height: 36px;
+  border: 2px solid rgba(198,168,74,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.translate-msg {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
 </style>
+  <script>
+// ── TRADUCTEUR FR ↔ IT ──────────────────────────────────────────
+let currentLang = 'fr';
+let originalHTML = null; // sauvegarde du HTML original français
+
+const LANG_NAMES = { fr: 'français', it: 'italien' };
+
+async function switchLang(lang) {
+  if (lang === currentLang) return;
+
+  // Mise à jour boutons
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+
+  // Si on revient au français → restaurer l'original
+  if (lang === 'fr') {
+    if (originalHTML) document.querySelector('main').innerHTML = originalHTML;
+    currentLang = 'fr';
+    // Relancer le scroll reveal
+    reObserve();
+    return;
+  }
+
+  // Sinon → traduire via Claude
+  showOverlay(true);
+
+  // Sauvegarder le HTML original une seule fois
+  if (!originalHTML) {
+    originalHTML = document.querySelector('main').innerHTML;
+  }
+
+  try {
+    const textContent = extractTranslatableText();
+    const translated = await translateWithClaude(textContent, lang);
+    applyTranslation(translated);
+    currentLang = lang;
+    reObserve();
+  } catch (err) {
+    console.error('Erreur traduction:', err);
+    alert('La traduction a échoué. Veuillez réessayer.');
+    // Réactiver le bouton FR
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === 'fr');
+    });
+  } finally {
+    showOverlay(false);
+  }
+}
+
+function showOverlay(state) {
+  document.getElementById('translateOverlay').classList.toggle('show', state);
+}
+
+// Extrait uniquement les textes visibles (pas les balises structurelles)
+function extractTranslatableText() {
+  const main = document.querySelector('main');
+  const nodes = main.querySelectorAll('p, h2, h3, blockquote p, blockquote cite, .s-label, .key-tag, .father-tag, .father p, .father cite, .key p, .prayer, .prayer-tag, li p');
+  const result = [];
+  nodes.forEach((n, i) => {
+    result.push({ id: i, text: n.innerText.trim() });
+  });
+  return result;
+}
+
+async function translateWithClaude(items, targetLang) {
+  const langName = LANG_NAMES[targetLang];
+  const payload = JSON.stringify(items);
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: `Tu es un traducteur théologique expert. Traduis chaque élément du tableau JSON du français vers le ${langName}. 
+Règles strictes :
+- Conserve le registre solennel et liturgique.
+- Les citations bibliques doivent utiliser la version officielle catholique en ${langName}.
+- Réponds UNIQUEMENT avec un tableau JSON valide, même format que l'entrée, sans aucun texte autour.
+- Ne traduis pas les noms propres (Jacob, Rachel, Laban, Jésus, Paul…).`,
+      messages: [{ role: 'user', content: `Traduis ce tableau en ${langName} :\n${payload}` }]
+    })
+  });
+
+  const data = await response.json();
+  const raw = data.content.map(c => c.text || '').join('');
+  const clean = raw.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+function applyTranslation(translatedItems) {
+  const main = document.querySelector('main');
+  const nodes = main.querySelectorAll('p, h2, h3, blockquote p, blockquote cite, .s-label, .key-tag, .father-tag, .father p, .father cite, .key p, .prayer, .prayer-tag, li p');
+  translatedItems.forEach(item => {
+    if (nodes[item.id]) {
+      nodes[item.id].innerText = item.text;
+    }
+  });
+}
+
+function reObserve() {
+  // Relancer les animations scroll-reveal après injection
+  const els = document.querySelectorAll('.r');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+  }, { threshold: 0.08 });
+  els.forEach(el => { el.classList.remove('v'); obs.observe(el); });
+}
+// ────────────────────────────────────────────────────────────────
+    </script>
 </head>
 <body>
+<!-- Language Switcher -->
+<div class="lang-switcher">
+  <button class="lang-btn active" data-lang="fr" onclick="switchLang('fr')">FR</button>
+  <div class="lang-sep"></div>
+  <button class="lang-btn" data-lang="it" onclick="switchLang('it')">IT</button>
+</div>
 
+<!-- Overlay chargement -->
+<div class="translate-overlay" id="translateOverlay">
+  <div class="translate-spinner"></div>
+  <p class="translate-msg">Traduction en cours...</p>
+</div>
+  
+!-- Bouton Retour -->
+<a href="sommaire.html" class="btn-retour">
+  &#8592; Retour
+</a>
 <!-- Fixed spiral SVG watermark -->
 <svg class="spiral-bg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
   <path d="M400,400 m0,-320 a320,320 0 1,1 -0.1,0 m0,50 a270,270 0 1,1 -0.1,0 m0,50 a220,220 0 1,1 -0.1,0 m0,50 a170,170 0 1,1 -0.1,0 m0,50 a120,120 0 1,1 -0.1,0 m0,50 a70,70 0 1,1 -0.1,0" stroke="#C6A84A" stroke-width="1.5" fill="none"/>
 </svg>
 
+  
 <!-- ─── HERO ─── -->
 <hero>
   <div class="hero-glow"></div>

@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Approche de Dieu — Alpha et Oméga</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --or: #C1A461;
+    --or-clair: #E2C97E;
+    --or-pale: #F5E9C8;
+    --fond: #0B0D12;
+    --fond-card: #11141C;
+    --fond-section: #0E1018;
+    --texte: #D8CDB8;
+    --texte-doux: #A09070;
+    --blanc: #F8F3E8;
+    --bordure: rgba(193,164,97,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--fond);
+    color: var(--texte);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ─── FOND ÉTOILÉ ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(193,164,97,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(193,164,97,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* particules dorées */
+  .particules {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .particule {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: var(--or);
+    opacity: 0;
+    animation: scintiller var(--dur) var(--del) infinite;
+  }
+  @keyframes scintiller {
+    0%,100% { opacity: 0; transform: scale(0.5); }
+    50%      { opacity: 0.6; transform: scale(1.2); }
+  }
+
+  /* ─── EN-TÊTE ─── */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 80px 20px 60px;
+    border-bottom: 1px solid var(--bordure);
+  }
+
+  .logo-alpha {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--or);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+
+  .logo-alpha span {
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--or);
+    vertical-align: middle;
+    margin: 0 10px;
+    opacity: 0.5;
+  }
+
+  .logo-titre {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--or-clair);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .logo-sous {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--texte-doux);
+    letter-spacing: 0.2em;
+    margin-bottom: 40px;
+  }
+
+  /* ornement */
+  .ornement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 30px auto;
+  }
+  .ornement-ligne { flex: 1; max-width: 120px; height: 1px; background: linear-gradient(to right, transparent, var(--or)); }
+  .ornement-ligne.droite { background: linear-gradient(to left, transparent, var(--or)); }
+  .ornement-croix {
+    font-size: 22px;
+    color: var(--or);
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* ─── TITRE PRÉDICATION ─── */
+  .predication-label {
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 16px;
+    opacity: 0.7;
+  }
+
+  .predication-titre {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 62px);
+    font-weight: 700;
+    color: var(--blanc);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    text-shadow: 0 0 60px rgba(193,164,97,0.15);
+  }
+
+  .predication-titre em {
+    color: var(--or-clair);
+    font-style: italic;
+  }
+
+  .predication-sous {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--texte-doux);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ─── CONTENU ─── */
+  main {
+    position: relative;
+    z-index: 5;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  /* ─── CITATIONS D'OUVERTURE ─── */
+  .citations-ouverture {
+    margin: 70px 0 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .citation-ouverture {
+    background: linear-gradient(135deg, rgba(193,164,97,0.07), rgba(193,164,97,0.02));
+    border-left: 3px solid var(--or);
+    padding: 28px 32px;
+    border-radius: 0 8px 8px 0;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .citation-ouverture blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(17px, 2.5vw, 21px);
+    font-style: italic;
+    color: var(--or-pale);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  .citation-ouverture cite {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    font-style: normal;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    margin: 64px 0;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .section-numero {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--or);
+    opacity: 0.6;
+    margin-bottom: 10px;
+  }
+
+  .section-titre {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3.5vw, 34px);
+    font-weight: 700;
+    color: var(--blanc);
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .section-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--texte-doux);
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--bordure);
+  }
+
+  /* ─── SOUS-SECTION ─── */
+  .sous-section {
+    margin: 40px 0;
+  }
+
+  .sous-titre {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--or-clair);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sous-titre::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--or);
+    flex-shrink: 0;
+  }
+
+  .texte-corps {
+    color: var(--texte);
+    font-size: 15.5px;
+    line-height: 1.9;
+    margin-bottom: 18px;
+  }
+
+  /* ─── CARTE SAINT ─── */
+  .saints-grille {
+    display: grid;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .saint-carte {
+    background: var(--fond-card);
+    border: 1px solid var(--bordure);
+    border-radius: 8px;
+    padding: 22px 26px;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .saint-carte::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--or), transparent);
+  }
+
+  .saint-carte:hover {
+    border-color: rgba(193,164,97,0.5);
+    transform: translateX(4px);
+  }
+
+  .saint-nom {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 8px;
+  }
+
+  .saint-citation {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-style: italic;
+    color: var(--or-pale);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .saint-explication {
+    font-size: 13.5px;
+    color: var(--texte-doux);
+    line-height: 1.7;
+  }
+
+  /* ─── VERSET BIBLIQUE ─── */
+  .verset {
+    background: linear-gradient(to right, rgba(193,164,97,0.08), transparent);
+    border-left: 2px solid var(--or);
+    padding: 20px 24px;
+    margin: 24px 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .verset-ref {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--or);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .verset-texte {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--texte);
+    line-height: 1.65;
+  }
+
+  /* ─── PILIER ─── */
+  .piliers {
+    display: grid;
+    gap: 20px;
+    margin: 32px 0;
+  }
+
+  @media (min-width: 640px) {
+    .piliers { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .pilier-carte {
+    background: var(--fond-card);
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    padding: 28px 22px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .pilier-carte:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(193,164,97,0.1);
+  }
+
+  .pilier-icone {
+    font-size: 32px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .pilier-nom {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--or-clair);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .pilier-desc {
+    font-size: 13px;
+    color: var(--texte-doux);
+    line-height: 1.7;
+  }
+
+  /* ─── CONTRASTE PIERRE / JUDAS ─── */
+  .contraste {
+    display: grid;
+    gap: 20px;
+    margin: 32px 0;
+  }
+
+  @media (min-width: 620px) {
+    .contraste { grid-template-columns: 1fr 1fr; }
+  }
+
+  .contraste-carte {
+    border-radius: 10px;
+    padding: 28px 24px;
+    border: 1px solid;
+  }
+
+  .contraste-carte.pierre {
+    background: linear-gradient(135deg, rgba(193,164,97,0.08), rgba(193,164,97,0.02));
+    border-color: rgba(193,164,97,0.4);
+  }
+
+  .contraste-carte.judas {
+    background: linear-gradient(135deg, rgba(80,50,50,0.2), rgba(50,30,30,0.1));
+    border-color: rgba(180,80,80,0.3);
+  }
+
+  .contraste-nom {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .contraste-carte.pierre .contraste-nom { color: var(--or-clair); }
+  .contraste-carte.judas .contraste-nom { color: #C87070; }
+
+  .contraste-texte {
+    font-size: 14px;
+    color: var(--texte-doux);
+    line-height: 1.8;
+  }
+
+  .contraste-lecon {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--texte);
+  }
+
+  /* ─── CONCLUSION ─── */
+  .conclusion {
+    background: linear-gradient(135deg, rgba(193,164,97,0.1), rgba(193,164,97,0.03));
+    border: 1px solid rgba(193,164,97,0.3);
+    border-radius: 12px;
+    padding: 50px 40px;
+    text-align: center;
+    margin: 64px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .conclusion::before {
+    content: '✝';
+    position: absolute;
+    font-size: 180px;
+    color: rgba(193,164,97,0.03);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+  }
+
+  .conclusion-label {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+
+  .conclusion-texte {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-style: italic;
+    color: var(--texte);
+    line-height: 1.8;
+    max-width: 640px;
+    margin: 0 auto 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .conclusion-amen {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--or-clair);
+    letter-spacing: 0.3em;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── PRIÈRE ─── */
+  .priere {
+    background: var(--fond-card);
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    padding: 36px 32px;
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .priere-label {
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+
+  .priere-texte {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--texte);
+    line-height: 1.75;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid var(--bordure);
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--or);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .footer-sous {
+    font-size: 12px;
+    color: var(--texte-doux);
+    letter-spacing: 0.15em;
+  }
+
+  /* ─── ANIMAITONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(1) { animation-delay: 0.1s; }
+  .section:nth-child(2) { animation-delay: 0.2s; }
+  .section:nth-child(3) { animation-delay: 0.3s; }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 50px 0;
+    opacity: 0.4;
+  }
+  .divider-ligne { flex: 1; height: 1px; background: var(--or); }
+  .divider-sym { color: var(--or); font-size: 16px; font-family: 'Playfair Display', serif; }
+
+  /* ─── POINT FORT ─── */
+  .point-fort {
+    display: flex;
+    gap: 14px;
+    margin: 14px 0;
+    align-items: flex-start;
+  }
+
+  .point-fort-icone {
+    color: var(--or);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .point-fort-texte {
+    font-size: 15px;
+    color: var(--texte);
+    line-height: 1.75;
+  }
+
+  .point-fort-texte strong {
+    color: var(--or-pale);
+    font-weight: 500;
+  }
+
+  /* ─── ENCADRE ─── */
+  .encadre {
+    background: rgba(193,164,97,0.05);
+    border: 1px solid rgba(193,164,97,0.2);
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin: 24px 0;
+    font-size: 14.5px;
+    color: var(--texte);
+    line-height: 1.8;
+  }
+
+  .encadre-titre {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--or);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- Particules -->
+<div class="particules" id="particules"></div>
+
+<!-- ═══ EN-TÊTE ═══ -->
+<header>
+  <div class="logo-alpha"><span></span>Communauté de Prière<span></span></div>
+  <div class="logo-titre">Alpha &amp; Oméga</div>
+  <div class="logo-sous">Le Premier et le Dernier — Ap 1, 8</div>
+
+  <div class="ornement">
+    <div class="ornement-ligne"></div>
+    <div class="ornement-croix">✝</div>
+    <div class="ornement-ligne droite"></div>
+  </div>
+
+  <div class="predication-label">Prédication · Séance de formation spirituelle</div>
+  <h1 class="predication-titre">L'Approche de <em>Dieu</em></h1>
+  <p class="predication-sous">« Approchez-vous de Dieu, et il s'approchera de vous. » — Jacques 4, 8</p>
+</header>
+
+<!-- ═══ CONTENU PRINCIPAL ═══ -->
+<main>
+
+  <!-- CITATIONS D'OUVERTURE -->
+  <div class="citations-ouverture">
+    <div class="citation-ouverture">
+      <blockquote>« Dieu ne se retire jamais de nous, mais c'est nous qui nous retirons de Lui. Si nous revenons à Lui, Il revient à nous avec plus d'amour encore. »</blockquote>
+      <cite>— Saint François de Sales</cite>
+    </div>
+    <div class="citation-ouverture">
+      <blockquote>« Sans Dieu c'est le néant, sans Dieu il n'y a rien. Et si Dieu n'est rien, il n'y a pas de vie éternelle. »</blockquote>
+      <cite>— Enseignement de la Tradition chrétienne</cite>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SECTION I — Que veut dire s'approcher ?
+  ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-numero">Section I</div>
+    <h2 class="section-titre">Que veut dire « s'approcher de Dieu » ?</h2>
+    <p class="section-intro">S'approcher de Dieu n'est pas une métaphore abstraite ou un idéal lointain — c'est un mouvement concret, personnel, qui transforme radicalement l'existence.</p>
+
+    <!-- 1.1 Rencontre d'amour -->
+    <div class="sous-section">
+      <h3 class="sous-titre">1. Une rencontre d'amour et de grâce</h3>
+
+      <p class="texte-corps">L'une des vérités les plus consolantes de la foi chrétienne est que Dieu fait toujours <strong style="color:var(--or-pale)">le premier pas</strong>. Avant même que nous nous tournions vers Lui, Il nous cherche, Il nous attend, Il nous attire par sa grâce. C'est ce que les Pères de l'Église ont médité et transmis à travers les siècles :</p>
+
+      <div class="saints-grille">
+        <div class="saint-carte">
+          <div class="saint-nom">Saint Augustin d'Hippone</div>
+          <div class="saint-citation">« Dieu est plus intime à moi que moi-même. »</div>
+          <div class="saint-explication">Augustin révèle une vérité étonnante : Dieu n'est pas un être lointain qu'il faudrait atteindre après de longues pérégrinations. Il habite le centre même de notre être, là où nous sommes le plus nous-mêmes. En nous tournant vers Lui, nous ne partons pas à la conquête d'un inconnu — nous découvrons Celui qui nous attendait déjà dans notre propre intériorité. C'est le paradoxe de la grâce : notre recherche de Dieu est déjà le fruit de sa présence en nous.</div>
+        </div>
+
+        <div class="saint-carte">
+          <div class="saint-nom">Saint Basile de Césarée</div>
+          <div class="saint-citation">« L'âme qui cherche Dieu, Dieu est déjà là à sa recherche. »</div>
+          <div class="saint-explication">Basile anticipe la grande tradition mystique : le désir spirituel lui-même est un don divin. Quand nous ressentons la soif de Dieu, c'est que Dieu a déjà commencé son œuvre en nous. Notre mouvement vers Lui est toujours <em>précédé et accompagné</em> de sa grâce — jamais nous ne sommes seuls dans cette quête. L'âme ne cherche pas Dieu dans le vide ; elle Le cherche parce qu'elle a déjà été trouvée par Lui.</div>
+        </div>
+
+        <div class="saint-carte">
+          <div class="saint-nom">Saint Jean Chrysostome</div>
+          <div class="saint-citation">« Si nous faisons un pas vers Lui, Il en fait dix vers nous. »</div>
+          <div class="saint-explication">L'image est saisissante : Dieu ne répond pas à notre avancée à proportion égale — Il répond dans l'abondance, dans la démesure de sa miséricorde. C'est la logique du Père miséricordieux dans la parabole de Luc 15 : quand le fils prodigue revient encore à distance, le père court à sa rencontre, l'embrasse, l'habille, et organise une fête. Dieu ne jauge pas nos mérites ; Il court vers nous dès que notre cœur se retourne.</div>
+        </div>
+
+        <div class="saint-carte">
+          <div class="saint-nom">Saint Isaac le Syrien</div>
+          <div class="saint-citation">« Approche-toi de Dieu par le désir et Lui se rapprochera par la miséricorde. »</div>
+          <div class="saint-explication">Isaac, grand maître de la vie intérieure, identifie le <em>désir</em> comme le premier acte spirituel. Avant les œuvres, avant les paroles, il y a le désir — cet élan du cœur vers l'Infini. Ce désir ouvre notre être comme une fleur s'ouvre à la lumière, et Dieu entre par la miséricorde. Le désir est notre contribution ; la miséricorde est la réponse divine, toujours infiniment plus grande que ce que nous avons offert.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"><div class="divider-ligne"></div><div class="divider-sym">✦</div><div class="divider-ligne"></div></div>
+
+    <!-- 1.2 Choix existentiel -->
+    <div class="sous-section">
+      <h3 class="sous-titre">2. Un choix existentiel : Dieu ou le néant</h3>
+
+      <p class="texte-corps">S'approcher de Dieu n'est pas une option parmi d'autres — c'est le choix fondamental qui détermine toute l'orientation de la vie. L'Écriture parle d'une urgence :</p>
+
+      <div class="verset">
+        <div class="verset-ref">Apocalypse 3, 16</div>
+        <div class="verset-texte">« Parce que tu n'es ni froid ni chaud, je vais te vomir de ma bouche. »</div>
+      </div>
+
+      <p class="texte-corps">La tiédeur spirituelle — cette zone de confort où l'on ne choisit ni vraiment Dieu ni vraiment le monde — est ce que Dieu refuse le plus énergiquement. Le Christ appelle ses disciples à une radicalité totale : <em>avec moi ou contre moi</em>. Il n'y a pas de neutralité bienheureuse dans la vie chrétienne.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les deux chemins — une réalité éternelle</div>
+        <div class="point-fort"><div class="point-fort-icone">✝</div><div class="point-fort-texte"><strong>Avec Lui :</strong> La vie éternelle, la paix du cœur, la force dans les épreuves, et la communion définitive avec l'Amour lui-même. Ce n'est pas une récompense extérieure — c'est l'accomplissement de ce que nous sommes profondément.</div></div>
+        <div class="point-fort"><div class="point-fort-icone">◇</div><div class="point-fort-texte"><strong>Sans Lui :</strong> Le néant, la mort éternelle — non pas l'annihilation, mais la séparation définitive de la Source de tout bien. Les théologiens appellent cela la <em>gehenne</em> : l'existence sans amour, sans lumière, sans communion.</div></div>
+      </div>
+
+      <div class="verset">
+        <div class="verset-ref">Apocalypse 3, 20</div>
+        <div class="verset-texte">« Voici, je me tiens à la porte et je frappe. Si quelqu'un entend ma voix et ouvre la porte, j'entrerai chez lui, et je souperai avec lui, et lui avec moi. »</div>
+      </div>
+
+      <p class="texte-corps">Le Seigneur ne force pas notre liberté — Il frappe. Il attend. Il invite. La porte ne s'ouvre que de l'intérieur. Cette image du Christ à la porte dit tout de la nature de notre relation avec Lui : Il est toujours présent, toujours offert ; c'est nous qui décidons d'ouvrir ou de rester enfermés dans nos résistances.</p>
+
+      <p class="texte-corps">Saint Jacques ajoute la dimension pratique et concrète de cette démarche :</p>
+      <div class="verset">
+        <div class="verset-ref">Jacques 4, 8</div>
+        <div class="verset-texte">« Approchez-vous de Dieu, et il s'approchera de vous. Purifiez vos mains, pécheurs ; purifiez vos cœurs, hommes irrésolus. »</div>
+      </div>
+      <p class="texte-corps">Purifier les mains, c'est changer ses actes. Purifier le cœur, c'est aller plus profond : transformer ses désirs, ses attachements, ses pensées secrètes. L'approche de Dieu n'est pas un simple sentiment ; elle engage tout l'être.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SECTION II — Comment s'approcher
+  ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-numero">Section II</div>
+    <h2 class="section-titre">Comment nous approcher de Dieu ?</h2>
+    <p class="section-intro">La tradition chrétienne identifie trois piliers fondamentaux sur lesquels repose toute vie spirituelle authentique.</p>
+
+    <div class="piliers">
+      <div class="pilier-carte">
+        <span class="pilier-icone">🕊</span>
+        <div class="pilier-nom">La Conversion</div>
+        <div class="pilier-desc">Se détourner résolument du mal pour revenir à Dieu le Rédempteur, par la confession et la pénitence.</div>
+      </div>
+      <div class="pilier-carte">
+        <span class="pilier-icone">🙏</span>
+        <div class="pilier-nom">La Prière</div>
+        <div class="pilier-desc">La respiration de l'âme — le dialogue intime entre le Créateur et la créature, dans le silence et l'abandon.</div>
+      </div>
+      <div class="pilier-carte">
+        <span class="pilier-icone">🌿</span>
+        <div class="pilier-nom">L'Humilité</div>
+        <div class="pilier-desc">La disposition du cœur sans laquelle ni la prière ni la confession ne portent leur fruit divin.</div>
+      </div>
+    </div>
+
+    <!-- 2.1 Conversion -->
+    <div class="sous-section">
+      <h3 class="sous-titre">1. La Conversion — Revenir à Dieu</h3>
+
+      <p class="texte-corps">La conversion est appelée en hébreu <em>teshuvah</em> — le retour. Ce n'est pas d'abord une performance morale, mais un retournement de l'être, un changement d'orientation fondamentale. Saint Jean Baptiste en est le grand précurseur : <em>« Repentez-vous, car le Royaume des Cieux est proche. »</em></p>
+
+      <p class="texte-corps">La conversion authentique comporte plusieurs dimensions insécables :</p>
+
+      <div class="point-fort"><div class="point-fort-icone">→</div><div class="point-fort-texte"><strong>Reconnaître ses fautes :</strong> Pas pour se complaire dans la culpabilité, mais pour voir la réalité avec lucidité. La concupiscence — le désir désordonné — est à la racine de beaucoup de nos fautes. La reconnaître, c'est commencer à en être libéré.</div></div>
+      <div class="point-fort"><div class="point-fort-icone">→</div><div class="point-fort-texte"><strong>Se confesser et faire pénitence :</strong> Le sacrement de la réconciliation est un don extraordinaire : non seulement Dieu pardonne, mais il l'annonce dans la chair, à travers la voix du prêtre. La pénitence n'est pas une punition — c'est le travail de reconstruction intérieure après la chute.</div></div>
+      <div class="point-fort"><div class="point-fort-icone">→</div><div class="point-fort-texte"><strong>Chercher la réconciliation avec un cœur brisé :</strong> Le Psaume 51 dit : <em>« Le sacrifice de Dieu, c'est un esprit brisé ; Dieu, tu ne rejettes pas le cœur brisé et contrit. »</em> L'orgueil fermé est imperméable à la grâce ; le cœur brisé devient une coupe que Dieu remplit de miséricorde.</div></div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La conversion n'est pas ponctuelle — elle est un chemin</div>
+        On se convertit une fois, puis on se convertit chaque matin. La vie chrétienne est une conversion continue : on tombe, on se relève, on reprend la marche. Ce qui compte n'est pas de ne jamais tomber — c'est de toujours se relever, les yeux tournés vers Lui.
+      </div>
+    </div>
+
+    <div class="divider"><div class="divider-ligne"></div><div class="divider-sym">✦</div><div class="divider-ligne"></div></div>
+
+    <!-- 2.2 Prière -->
+    <div class="sous-section">
+      <h3 class="sous-titre">2. La Prière — La respiration de l'âme</h3>
+
+      <p class="texte-corps">Saint François de Sales disait que la prière est le grand moyen de nous approcher de Dieu, parce qu'elle est en essence un <em>dialogue d'amour</em> — non pas un monologue de demandes, mais un échange vivant entre le Créateur et la créature, où l'on s'abandonne entièrement à sa volonté.</p>
+
+      <div class="verset">
+        <div class="verset-ref">1 Rois 19, 12</div>
+        <div class="verset-texte">Dieu n'était pas dans le vent violent, ni dans le tremblement de terre, ni dans le feu. Et après le feu, il y eut un murmure doux et léger.</div>
+      </div>
+
+      <p class="texte-corps">Élie entend Dieu non dans les grands fracas, mais dans le <em>kol demamah daqah</em> — la voix du silence ténu. Cette expérience d'Élie est paradigmatique : Dieu parle ordinairement dans le silence intérieur, dans la quiétude de l'âme recueillie. C'est pourquoi le Cardinal Robert Sarah, dans son livre <em>La Force du Silence</em>, nous exhorte à retrouver le silence comme condition d'une vraie rencontre avec Dieu dans un monde de bruit.</p>
+
+      <div class="point-fort"><div class="point-fort-icone">◈</div><div class="point-fort-texte"><strong>La prière liturgique :</strong> La messe, les sacrements, la Liturgie des Heures — prière officielle de l'Église qui nous ancre dans la grande tradition et nous unit à tout le Corps mystique du Christ.</div></div>
+      <div class="point-fort"><div class="point-fort-icone">◈</div><div class="point-fort-texte"><strong>La prière personnelle :</strong> La conversation intime quotidienne avec Dieu — dans nos joies, nos douleurs, nos questions. Pas nécessairement de belles formules ; la simplicité d'un cœur ouvert suffit.</div></div>
+      <div class="point-fort"><div class="point-fort-icone">◈</div><div class="point-fort-texte"><strong>La lectio divina :</strong> La lecture priante de l'Écriture, où l'on laisse la Parole de Dieu descendre dans le cœur, le pénétrer, le transformer lentement de l'intérieur.</div></div>
+    </div>
+
+    <div class="divider"><div class="divider-ligne"></div><div class="divider-sym">✦</div><div class="divider-ligne"></div></div>
+
+    <!-- 2.3 Humilité -->
+    <div class="sous-section">
+      <h3 class="sous-titre">3. L'Humilité — La porte étroite de la grâce</h3>
+
+      <div class="verset">
+        <div class="verset-ref">Jacques 4, 6</div>
+        <div class="verset-texte">« Dieu résiste aux orgueilleux, mais il fait grâce aux humbles. »</div>
+      </div>
+
+      <p class="texte-corps">Saint Bernard disait que l'humilité est la fondation de tout édifice spirituel. Sans elle, la confession n'est qu'une formalité, la prière une récitation vide. L'humilité n'est pas le mépris de soi — c'est la <em>vérité sur soi</em> : reconnaître ce que l'on est (une créature aimée et limitée) et ce que Dieu est (l'Amour infini dont tout dépend).</p>
+
+      <p class="texte-corps">La parabole du Pharisien et du Publicain (Luc 18, 9-14) est l'illustration la plus saisissante de cette vérité :</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Luc 18, 9-14 — La parabole des deux prières</div>
+        Le Pharisien entre au Temple, dresse la liste de ses mérites, se compare aux autres avec satisfaction. Il prie, techniquement — mais il parle <em>à lui-même</em> (v.11). Le Publicain, lui, n'ose même pas lever les yeux. Il frappe sa poitrine : <em>« Ô Dieu, sois apaisé envers moi, qui suis un pécheur. »</em> Et c'est lui qui repart justifié. L'humilité a ouvert son cœur ; l'orgueil a fermé celui du Pharisien. La grâce ne peut entrer que là où il y a de l'espace — et l'espace, c'est l'humilité qui le crée.
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SECTION III — Pierre et Judas
+  ════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-numero">Section III</div>
+    <h2 class="section-titre">Pierre et Judas — Le contraste de deux repentances</h2>
+    <p class="section-intro">Tous deux ont trahi. Tous deux ont ressenti la douleur de la faute. Mais leurs réactions révèlent deux chemins radicalement différents — l'un vers la vie, l'autre vers la mort.</p>
+
+    <div class="contraste">
+      <div class="contraste-carte pierre">
+        <div class="contraste-nom">✝ Saint Pierre</div>
+        <div class="contraste-texte">
+          Pierre a renié le Christ trois fois, devant une servante, dans la nuit de la Passion. Quand le coq chanta, le regard de Jésus croisa le sien — et Pierre sortit, et pleura amèrement (Luc 22, 62).
+          <br><br>
+          Ce regard ne contenait pas de reproche — il contenait de l'amour. Pierre le reçut comme tel. Dans sa faute, il resta tourné vers Jésus. Il ne fuit pas, il ne se déroba pas à la rencontre. Après la Résurrection, au bord du lac de Tibériade (Jean 21), Jésus lui posa trois fois la question de l'amour — une question pour chaque reniement — et Pierre fut restauré dans sa mission.
+        </div>
+        <div class="contraste-lecon">La repentance de Pierre : la honte vécue dans la relation, le désespoir traversé sans rompre le lien avec Jésus. Le péché ne fut pas le dernier mot.</div>
+      </div>
+
+      <div class="contraste-carte judas">
+        <div class="contraste-nom">✗ Judas Iscariote</div>
+        <div class="contraste-texte">
+          Judas aussi ressentit le remords. Matthieu 27, 3 dit qu'il « se repentit » et rendit les trente pièces d'argent. Mais ce repentir se retourna contre lui-même plutôt que vers Dieu. Il dit : <em>« J'ai péché en livrant le sang innocent. »</em> — mais il ne s'adressa pas au Christ. Il alla chez les grands prêtres, qui se lavèrent les mains de lui.
+          <br><br>
+          Judas tomba dans le désespoir — le péché contre l'Esprit Saint dans sa forme la plus tragique : croire que sa faute était plus grande que la miséricorde de Dieu. Il ne pouvait pas imaginer que Jésus crucifié pouvait encore le pardonner.
+        </div>
+        <div class="contraste-lecon">La repentance de Judas : la culpabilité sans relation, le retournement sur soi-même, le refus de croire à la miséricorde. Le désespoir prit la place où aurait dû être la foi.</div>
+      </div>
+    </div>
+
+    <div class="encadre">
+      <div class="encadre-titre">La leçon spirituelle pour nous</div>
+      La différence entre Pierre et Judas n'est pas la gravité de la faute — tous deux ont trahi de façon terrible. La différence est dans la <strong>direction du regard après la chute</strong>. Pierre regarda vers Jésus, même dans les larmes. Judas se regarda lui-même, et ne vit que sa faute. La foi chrétienne proclame que <em>aucune faute n'est trop grande pour la miséricorde de Dieu</em> — à condition que nous lui ouvrions la porte de notre cœur brisé.
+    </div>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="conclusion">
+    <div class="conclusion-label">Conclusion</div>
+    <p class="conclusion-texte">
+      S'approcher de Dieu est le choix le plus urgent et le plus beau que puisse faire un être humain. Il se réalise dans la conversion de nos cœurs, dans la fidélité de notre prière, et dans l'humilité qui ouvre tout à la grâce. Dieu ne se lasse jamais de nous attendre. Quelle que soit la distance parcourue loin de Lui, Il court à notre rencontre dès que nous nous retournons. Avec le Christ, nous serons toujours vainqueurs.
+    </p>
+    <div class="conclusion-amen">A M E N</div>
+  </div>
+
+  <!-- PRIÈRE FINALE -->
+  <div class="priere">
+    <div class="priere-label">✝ Intention de prière</div>
+    <p class="priere-texte">« Prions que Dieu nous aide à briser notre orgueil<br>et laisse le Saint-Esprit nous transformer. »</p>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Alpha &amp; Oméga</div>
+  <div class="footer-sous">Communauté de Prière · Brazzaville</div>
+</footer>
+
+<script>
+  // Génération des particules dorées
+  const conteneur = document.getElementById('particules');
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particule';
+    p.style.cssText = `
+      left: ${Math.random()*100}%;
+      top: ${Math.random()*100}%;
+      --dur: ${3 + Math.random()*5}s;
+      --del: ${Math.random()*6}s;
+    `;
+    conteneur.appendChild(p);
+  }
+
+  // Animation d'apparition au scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.saint-carte, .pilier-carte, .verset, .encadre, .contraste-carte').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
